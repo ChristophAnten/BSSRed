@@ -60,7 +60,7 @@ the blinded estimation of the event rates from the supplied data.frame.
 \examples{
 N <- matrix(rep(50,20),ncol=2)
 tn <- 0:(NROW(N)-1)
-dfSurv <- simSurvData(N=N, lambda=exp(.7)/12, sigma=1, theta=.7, gamma=exp(.3)/12, kappa=1, distS = "exponential",distC = "exponential",L=10)
+dfSurv <- simSurvData(N=N, lambda=exp(.7)/12, sigma=1, theta=.7, gamma=exp(.8)/12, kappa=1, distS = "exponential",distC = "exponential",L=10)
 btEstimate(dfSurv=dfSurv, theta.star=.7, N=N, tn=tn, nEvents=40, L=20,
            sigma=1, distS="exponential",
            gamma=-log(.3)/24, kappa=1, distC="exponential")

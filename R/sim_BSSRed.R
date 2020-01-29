@@ -117,7 +117,4 @@ sim_BSSRed <- function(N,tn,M,tm,addRecT,sim.lambdaP, sigma=sigma,
   } # end loop l
   return(res)
 } # end function
-res <- sim_BSSRed(N=2*N,tn=tn,M=2*N[R,,drop=F],tm=tn[R]+1,addRecT=c(0,3,6), # add number of patients or time
-                  sim.lambdaP = get_hazardRate(seq(propP-.1,propP+.1,length.out = 9),timeP), sigma=1,
-                  theta=theta,gamma=gamma,kappa=1,distS="exponential",distC="exponential",nEvents=nEvents,
-                  L=L,nSim=100, par.est=FALSE, fixed.min.studytime=TRUE, seed=235711)
+
