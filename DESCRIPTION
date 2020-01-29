@@ -4,8 +4,7 @@ Title: Blinded Sample Size Reestimation For Event Driven Trials
 Version: 0.1.0
 Author: Christoph Anten
 Maintainer: Christoph Anten <christoph-anten@hotmail.de>
-Description: This Package provides methods for blinded sample size reestimation for event-driven data in a two group seting. 
-The implementation follows the presented Method provided by T. Friede et al..
+Description: This Package provides methods for blinded sample size reestimation for event-driven data in a two group seting. The implementation follows the presented Method provided by T. Friede et al..
 License: GPL_3
 Encoding: UTF-8
 LazyData: true
