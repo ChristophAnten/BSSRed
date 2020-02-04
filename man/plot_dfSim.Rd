@@ -13,8 +13,16 @@ plot_dfSim(dfSim, type = "l", lty = 1, ...)
 
 \item{lty}{grafical parameter for the linetype. Default and recommended is 1.}
 
-\item{...}{}
+\item{...}{additional \code{matplot()} related arguments.}
+}
+\value{
+a plot of the supplied data.frame.
 }
 \description{
 Plots a event based data frame
+}
+\examples{
+N <- matrix(rep(50,10),ncol=2)
+dfSim <- simSurvData(N=N, lambda=-log(1-.3)/24, sigma=1, theta=.7, gamma=-log(1-.2)/24, kappa=1, distS = "exponential",distC = "exponential",L=10)
+plot_dfSim(dfSim)
 }

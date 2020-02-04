@@ -1,6 +1,8 @@
 ---
 output: github_document
 bibliography: bibliography.bib
+editor_options: 
+  chunk_output_type: console
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
@@ -19,7 +21,7 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of BSSRed is to provide the methods published by T. Friede et al. [@friede2010blinded], which main aspect lies on reestimation procedures 
+The goal of BSSRed is to provide the methods published by T. Friede et al. [@friede2010blinded], which main aspect lies on reestimation procedures.
 
 ## Installation
 
@@ -39,27 +41,85 @@ This is a basic example to evaluate and varify a study plan with event driven da
 
 For this example it is assumed, that we have some prior information from other studies on witch we base our assumptions on the hazard and drop out rates.
 
-We assume, that in the control group 30% of our patients have an event after 24 month and 20% of the patients across both group drop out of the study within 24 month. Assuming a 30% reduction of hazard in the control group. 
+We assume, that 30% of the patients in the control group have an event after 24 month and 20% of the patients across both group drop out of the study within 24 month. Assuming a 30% reduction of hazard in the treatment group. 
 
-The recruitment is assumed to start a bit slowly in the beginning with 11 in the control and 22 in the treatment group, rising to 79 in the control and 159 in the treatment group.
-
-```{r example}
+```{r start}
 library(BSSRed)
-## basic example code
+
+# assumed reduction of hazard by 30% 
+# defining the hazard ratio 'theta'
+theta = 1-.3
+
+# hazard rate of control group is 30% after 24 month
+lambdaC <- get_hazardRate(.3,24)
+lambdaC
+
+# the treatment group has a reduction of 30% after 24 month
+lambdaT <- lambdaC*theta
+lambdaT
+
+# the overall dropout proportion is 20% after 24 months
+gamma <- get_hazardRate(.2,24)
+gamma
 ```
 
-What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so:
+With a nominal alpha niveau of 5% (two-sided), the study aims for a power of 90%. The treatment allocation is planned to be 2:1 (treatment:control). With these additional assumptions we can calculate the required number of events to achive the targetet power as follows.
 
-```{r cars}
-summary(cars)
+```{r schoenefld}
+library(BSSRed)
+
+# define the alpha and beta error
+alpha = .05
+beta = .1
+
+# set the alternative 
+alternative = "two-sided"
+
+# define the allocation parameter
+k=2
+
+# calculating the required number of events
+nEvents <- nschoenfeld(theta = theta, k=k, alpha=alpha, beta=beta, alternative = "two-sided")
+nEvents
+
+nEvents <- ceiling(nEvents)
+nEvents
 ```
 
-You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-date.
+The recruitment is assumed to be linear with with a total of 1071 patients and an treatment allocation of 2:1 (tratment:control). The recruitment is assumend to be available at the start of each month.
 
-You can also embed plots, for example:
+```{r recruitment}
 
-```{r pressure, echo = FALSE}
-plot(pressure)
+# define the recruitment table
+N_recruit <- set_recruitment(targetN=1071, k=2, timePoints=0:23)
+head(N_recruit,5)
+
+colSums(N_recruit[,c("T","C")])
+
+# short overview of recruitments
+barplot(names.arg =N_recruit$time,height=(t(cumsum(N_recruit[,c("T","C")]))),
+        main = "Cummulative number of recruitments",col=c("grey33","grey88"))
+legend("topleft",legend = c("T","C"),fill = c("grey33","grey88"),bty="n")
 ```
 
-In that case, don't forget to commit and push the resulting figure files, so they display on GitHub!
+The study is planned to run for 48 months. With these information we can check if our recruitments will suffice to achieve the calculated number of events 'nEvent' before 48 months.
+
+```{r schedule}
+
+# define the administrative censoring at the end of the study
+L = 48
+
+# calculate expected number of events
+calc_expEvents(N_recruit[,1:2],theta,L,N_recruit[,3],lambdaC,gamma = gamma)
+```
+
+Thes are not enough events to hold the assumptions. So we can check weather we can reach the targeted number of events by adding some mor recruitments
+
+```{r adjust_schedule}
+# that is not enough we need
+rEstimate(N=N_recruit[,1:2], tn=N_recruit[,3], theta=theta, nEvents=nEvents, L=L,
+                  lambda=lambdaC, gamma = gamma, distC="exponential",distS="exponential")
+```
+
+So we need to recruit `r sum(rEstimate(N=N_recruit[,1:2], tn=N_recruit[,3], theta=theta, nEvents=nEvents, L=L,lambda=lambdaC, gamma = gamma, distC="exponential",distS="exponential")$rec_total_number)` patients or we need `r sum(rEstimate(N=N_recruit[,1:2], tn=N_recruit[,3], theta=theta, nEvents=nEvents, L=L,lambda=lambdaC, gamma = gamma, distC="exponential",distS="exponential")$rec_batch)` batches of recruits. The last recruitment arrives at timepoint `r sum(rEstimate(N=N_recruit[,1:2], tn=N_recruit[,3], theta=theta, nEvents=nEvents, L=L,lambda=lambdaC, gamma = gamma, distC="exponential",distS="exponential")$rec_time)`.
+

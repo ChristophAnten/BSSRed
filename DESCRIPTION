@@ -11,3 +11,5 @@ LazyData: true
 RoxygenNote: 6.1.1
 URL: https://github.com/Knusprikus/BSSRed
 BugReports: https://github.com/Knusprikus/BSSRed/issues
+Suggests: 
+    testthat (>= 2.1.0)
