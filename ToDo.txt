@@ -1,0 +1,21 @@
+# install locally:
+library("devtools")
+install_git(url="https://github.com/ChristophAnten/BSSRed.git",
+            lib="~/temp/test", upgrade=FALSE)
+library("BSSRed", lib.loc="~/temp/test")
+
+# install globally:
+library("devtools")
+install_git(url="https://github.com/ChristophAnten/BSSRed.git",
+upgrade=FALSE)
+library("bayesmeta")
+
+
+To Do:
+
+- Input Checks on all functions
+- complete recruitment function and add to git
+- Check Details on all functions and citing
+- add and verify output to all the functions
+- complete base grafics
+(- add optional ggplot grafics)

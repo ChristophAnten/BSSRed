@@ -1,4 +1,9 @@
-library(BSSRed)
+# install globally:
+library("devtools")
+install_git(url="https://github.com/ChristophAnten/BSSRed.git",
+            upgrade=FALSE)
+library("BSSRed")
+
 
 get_hazardRate <- function(prop,time,theta=NULL){
   if (is.null(theta)){
@@ -77,6 +82,7 @@ res <- sim_BSSRed(N=2*N,tn=tn,M=2*N[R,,drop=F],tm=tn[R]+1,addRecT=c(0,3,6), # ad
 #                   sim.lambdaP = par.list$sim.lambdaP, sigma=1,
 #                   theta=theta,gamma=gamma,kappa=1,distS="exponential",distC="exponential",nEvents=nEvents,
 #                   L=par.list$L,nSim=100, par.est=FALSE, fixed.min.studytime=TRUE, seed=235711)
+
 library(plyr)
 library(dplyr)
 library(ggplot2)
