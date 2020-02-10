@@ -24,3 +24,22 @@ plot_dfSim <- function(dfSim,type="l",lty=1,...){
           col=ifelse(status==0,"darkgreen","blue"),
           lty=lty,...)
 }
+# cols <- rainbow(3, s = 0.5)
+# boxplot(study.end ~ type + lambda, data = res$results,
+#         at = rep(seq(0,4*(9-1),4),each=3)+rep(0:2,9), col = cols, xaxt = "n")
+# axis(side = 1, at = seq(1,4*9-1,4), labels = seq(propP-.1,propP+.1,length.out = 9))
+# legend("topleft", fill = rainbow(3, s = 0.5), legend = unique(), horiz = T)
+#
+# boxplot(nPop ~ type + lambda, data = res$results,
+#         at = rep(seq(0,4*(9-1),4),each=3)+rep(0:2,9), col = cols, xaxt = "n")
+# axis(side = 1, at = seq(1,4*9-1,4), labels = seq(propP-.1,propP+.1,length.out = 9))
+# legend("topleft", fill = rainbow(3, s = 0.5), legend = unique(), horiz = T)
+#
+# plot(y=nPop, x=lambda,
+#         data = aggregate(res$results[,-(1:3)],list(lambda=res$results$lambda,type=res$results$type),mean),
+#      type="l")
+# axis(side = 1, at = seq(1,4*9-1,4), labels = seq(propP-.1,propP+.1,length.out = 9))
+# legend("topleft", fill = rainbow(3, s = 0.5), legend = unique(), horiz = T)
+#
+#
+# aggregate(res$results[,-(1:3)],list(lambda=res$results$lambda,type=res$results$type),mean)

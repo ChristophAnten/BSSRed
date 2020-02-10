@@ -66,7 +66,6 @@ gamma
 With a nominal alpha niveau of 5% (two-sided), the study aims for a power of 90%. The treatment allocation is planned to be 2:1 (treatment:control). With these additional assumptions we can calculate the required number of events to achive the targetet power as follows.
 
 ```{r schoenefld}
-library(BSSRed)
 
 # define the alpha and beta error
 alpha = .05
@@ -102,7 +101,7 @@ barplot(names.arg =N_recruit$time,height=(t(cumsum(N_recruit[,c("T","C")]))),
 legend("topleft",legend = c("T","C"),fill = c("grey33","grey88"),bty="n")
 ```
 
-The study is planned to run for 48 months. With these information we can check if our recruitments will suffice to achieve the calculated number of events 'nEvent' before 48 months.
+The study is planned to run for 48 months. With these information we can check if our recruitments will suffice to achieve the calculated number of events \code{nEvent} before 48 months.
 
 ```{r schedule}
 
@@ -113,7 +112,7 @@ L = 48
 calc_expEvents(N_recruit[,1:2],theta,L,N_recruit[,3],lambdaC,gamma = gamma)
 ```
 
-Thes are not enough events to hold the assumptions. So we can check weather we can reach the targeted number of events by adding some mor recruitments
+Thes are not enough events to hold the assumptions. With \code{rEstimate} we can calculate the additional recruitements we need.
 
 ```{r adjust_schedule}
 # that is not enough we need
@@ -123,3 +122,61 @@ rEstimate(N=N_recruit[,1:2], tn=N_recruit[,3], theta=theta, nEvents=nEvents, L=L
 
 So we need to recruit `r sum(rEstimate(N=N_recruit[,1:2], tn=N_recruit[,3], theta=theta, nEvents=nEvents, L=L,lambda=lambdaC, gamma = gamma, distC="exponential",distS="exponential")$rec_total_number)` patients or we need `r sum(rEstimate(N=N_recruit[,1:2], tn=N_recruit[,3], theta=theta, nEvents=nEvents, L=L,lambda=lambdaC, gamma = gamma, distC="exponential",distS="exponential")$rec_batch)` batches of recruits. The last recruitment arrives at timepoint `r sum(rEstimate(N=N_recruit[,1:2], tn=N_recruit[,3], theta=theta, nEvents=nEvents, L=L,lambda=lambdaC, gamma = gamma, distC="exponential",distS="exponential")$rec_time)`.
 
+AS the final step we can simulate the study and observe the impact of misspecification of the assumed hazard ratio theta on the study duration.
+
+```{r simBSSRed}
+# simulating the study
+res <- sim_BSSRed(N=N_recruit[,1:2],tn=N_recruit[,3],M=as.matrix(N_recruit[24,1:2,drop=F]),tm=25,addRecT=c(2,4,6), # add number of patients or time
+                  sim.lambdaP = get_hazardRate(seq(.2,.4,length.out = 9),24), sigma=1,
+                  theta=theta,gamma=gamma,kappa=1,distS="exponential",distC="exponential",nEvents=nEvents,
+                  L=L,nSim=1000, par.est=FALSE, fixed.min.studytime=TRUE, seed=235711)
+
+library(plyr)
+library(dplyr)
+library(ggplot2)
+res$results %>%
+  group_by(lambda,type) %>%
+  summarise_all(mean) %>%
+  ungroup() %>%
+  mutate(lambda = 1-exp(-lambda*24)) %>%
+  ggplot(aes(x=lambda,y=study.end,col=factor(type))) +
+  geom_point() +
+  geom_hline(yintercept = L,lty=2,col="darkgrey") +
+  geom_line() +
+  ggtitle(sprintf("Mean Time to End of Study (nEvent=%i)",ceiling(nEvents))) +
+  theme_bw() +
+  ylab("Mean study duration") +
+  xlab("24 month conifrmed progression probability")# +
+# scale_y_continuous(breaks = seq(30,70,by=10),limits = c(30,70))
+res$results %>%
+  group_by(lambda,type) %>%
+  summarise_all(mean) %>%
+  ungroup() %>%
+  mutate(lambda = 1-exp(-lambda*24)) %>%
+  ggplot(aes(x=lambda,y=nPop,col=factor(type))) +
+  geom_point() +
+  geom_line() +
+  ggtitle(sprintf("Mean number of Additional Patients (nEvent=%i)",ceiling(nEvents))) +
+  ylab("Mean number of additional patients") +
+  xlab("24 month conifrmed progression probability") +
+  theme_bw()# +
+# scale_y_continuous(breaks = seq(0,700,by=100),limits = c(0,700))
+res$results %>%
+  group_by(lambda,type) %>%
+  mutate(power = BSSRed::pschoenfeld(theta = theta,
+                                     nEvent = events,
+                                     k = 2,
+                                     alpha = .05,
+                                     alternative = "two-sided")) %>%
+  summarise_all(mean) %>%
+  ungroup() %>%
+  mutate(lambda = 1-exp(-lambda*24)) %>%
+  ggplot(aes(x=lambda,y=power,col=factor(type))) +
+  geom_point() +
+  geom_line() +
+  geom_hline(yintercept = 1-.1,lty=2,col="darkgrey") +
+  ggtitle(sprintf("Power at End of Study (nEvent=%i)",ceiling(nEvents))) +
+  ylab("Mean power") +
+  xlab("24 month conifrmed progression probability") +
+  theme_bw()
+```
