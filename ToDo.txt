@@ -10,11 +10,13 @@ install_git(url="https://github.com/ChristophAnten/BSSRed.git",
 upgrade=FALSE)
 library("bayesmeta")
 
+# init a test
+# usethis::use_test("nschoenfeld")
 
 To Do:
 
 - Input Checks on all functions
-- complete recruitment function and add to git
+- complete recruitment function and add to git -> CHECK!
 - Check Details on all functions and citing
 - add and verify output to all the functions
 - complete base grafics

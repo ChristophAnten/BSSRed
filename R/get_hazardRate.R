@@ -2,7 +2,7 @@
 
 
 #' @title Get hazard rates
-#' @describeIn Functions to switch between proportional hazard and hazard rates.
+#' @describeIn Functions to calculate hazard rates by the proportion of confirmed events at given time.
 #'
 #' @usage get_hazardRate(prop,time,theta=NULL)
 #' @usage get_eventProportion(hazard,time,theta=NULL)
@@ -33,7 +33,6 @@ get_hazardRate <- function(prop,time,theta=NULL){
     return(-log(1-prop) /time *  theta)
   }
 }
-
 
 #' @rdname get_hazardRate
 #' @export

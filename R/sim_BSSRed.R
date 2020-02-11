@@ -1,5 +1,10 @@
 
-#' Title
+#' Simulation
+#'
+#' @usage
+#' sim_BSSRed(N, tn, M, tm, addRecT, sim.lambdaP, sigma=1, theta.star, gamma, kappa=1,
+#'            distS=c("exponential","weibull"), distC=c("exponential","weibull"),
+#'            nEvents, L, nSim=100, par.est=FALSE, fixed.min.studytime=TRUE, seed=235711)
 #'
 #' @param N a two-column matrix which represents the size of recruitment per group.
 #' @param tn a vector of length \code{NROW(N)} defining the timepoint of each recruitment-batch.
@@ -10,23 +15,23 @@
 #' @param addRecT a vector defining the allowed additional recruitment batches.
 #' @param sim.lambdaP a vector defining the hazard rates of the control group.
 #' @param sigma a number defining the shape parameter of the survival prozess.
-#' @param theta.star a number defining the true hazard ratio
-#' @param gamma
-#' @param kappa
-#' @param distS
-#' @param distC
-#' @param nEvents
-#' @param L
-#' @param nSim
-#' @param par.est
-#' @param fixed.min.studytime
+#' @param theta.star a number defining the true hazard ratio.
+#' @param gamma a number defining the hazard of the censor process.
+#' @param kappa a number defining the shape parameter of the censor prozess.
+#' @param distS a string defining the distribution of the survival process. Default is \code{"exponential"}.
+#' @param distC a string defining the distribution of the censor process. Default is \code{"exponential"}.
+#' @param nEvents a number defining the targeted number of events. (alternatively alpha, beta)
+#' @param L a number defining the administrative censoring time.
+#' @param nSim a number defining the number of simulations per parametrisation.
+#' @param par.est a boolean. If \code{TRUE} the parameter-estimates and teststatistik will be calculated. Warning: will greatliy increase runtime.
+#' @param fixed.min.studytime a boolean. If \code{TRUE} the simulated studies will not stop before \code{L}. If \code{FALSE} the study will end when the targeted amount of events is reached.
 #' @param seed
 #'
-#' @return
+#' @return a list containing the results of each simulation as a data.frame.
 #' @export
 #'
 #' @examples
-sim_BSSRed <- function(N,tn,M,tm,addRecT,sim.lambdaP, sigma=sigma,
+sim_BSSRed <- function(N,tn,M,tm,addRecT,sim.lambdaP, sigma,
                        theta.star,gamma,kappa,distS,distC,nEvents,
                        L,nSim=100, par.est=FALSE, fixed.min.studytime=TRUE, seed=235711){
 

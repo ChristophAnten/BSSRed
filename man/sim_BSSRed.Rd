@@ -2,15 +2,54 @@
 % Please edit documentation in R/sim_BSSRed.R
 \name{sim_BSSRed}
 \alias{sim_BSSRed}
-\title{Title}
+\title{Simulation}
 \usage{
-sim_BSSRed(N, tn, M, tm, addRecT, sim.lambdaP, sigma = sigma, theta.star,
-  gamma, kappa, distS, distC, nEvents, L, nSim = 100, par.est = FALSE,
-  fixed.min.studytime = TRUE, seed = 235711)
+sim_BSSRed(N, tn, M, tm, addRecT, sim.lambdaP, sigma=1, theta.star, gamma, kappa=1,
+           distS=c("exponential","weibull"), distC=c("exponential","weibull"),
+           nEvents, L, nSim=100, par.est=FALSE, fixed.min.studytime=TRUE, seed=235711)
 }
 \arguments{
+\item{N}{a two-column matrix which represents the size of recruitment per group.}
+
+\item{tn}{a vector of length \code{NROW(N)} defining the timepoint of each recruitment-batch.}
+
+\item{M}{a matrix defining the ongoining recruitment after the planned N. Default is the
+last row of N.}
+
+\item{tm}{a vector of length \code{NROW(M)} defining the timepoint of each future
+recruitment-batch. Default is the next equidistant timepoint after the last of \code{tn}.}
+
+\item{addRecT}{a vector defining the allowed additional recruitment batches.}
+
+\item{sim.lambdaP}{a vector defining the hazard rates of the control group.}
+
+\item{sigma}{a number defining the shape parameter of the survival prozess.}
+
+\item{theta.star}{a number defining the true hazard ratio.}
+
+\item{gamma}{a number defining the hazard of the censor process.}
+
+\item{kappa}{a number defining the shape parameter of the censor prozess.}
+
+\item{distS}{a string defining the distribution of the survival process. Default is \code{"exponential"}.}
+
+\item{distC}{a string defining the distribution of the censor process. Default is \code{"exponential"}.}
+
+\item{nEvents}{a number defining the targeted number of events. (alternatively alpha, beta)}
+
+\item{L}{a number defining the administrative censoring time.}
+
+\item{nSim}{a number defining the number of simulations per parametrisation.}
+
+\item{par.est}{a boolean. If \code{TRUE} the parameter-estimates and teststatistik will be calculated. Warning: will greatliy increase runtime.}
+
+\item{fixed.min.studytime}{a boolean. If \code{TRUE} the simulated studies will not stop before \code{L}. If \code{FALSE} the study will end when the targeted amount of events is reached.}
+
 \item{seed}{}
 }
+\value{
+a list containing the results of each simulation as a data.frame.
+}
 \description{
-Title
+Simulation
 }
