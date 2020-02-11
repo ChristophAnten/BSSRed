@@ -1,14 +1,16 @@
 
 #' Title
 #'
-#' @param N
-#' @param tn
-#' @param M
-#' @param tm
-#' @param addRecT
-#' @param sim.lambdaP
-#' @param sigma
-#' @param theta.star
+#' @param N a two-column matrix which represents the size of recruitment per group.
+#' @param tn a vector of length \code{NROW(N)} defining the timepoint of each recruitment-batch.
+#' @param M a matrix defining the ongoining recruitment after the planned N. Default is the
+#' last row of N.
+#' @param tm a vector of length \code{NROW(M)} defining the timepoint of each future
+#' recruitment-batch. Default is the next equidistant timepoint after the last of \code{tn}.
+#' @param addRecT a vector defining the allowed additional recruitment batches.
+#' @param sim.lambdaP a vector defining the hazard rates of the control group.
+#' @param sigma a number defining the shape parameter of the survival prozess.
+#' @param theta.star a number defining the true hazard ratio
 #' @param gamma
 #' @param kappa
 #' @param distS
