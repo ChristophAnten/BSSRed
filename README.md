@@ -161,7 +161,7 @@ res <- sim_BSSRed(N=N_recruit[,1:2],tn=N_recruit[,3],M=as.matrix(N_recruit[24,1:
                   tm=25,addRecT=c(2,4,6),
                   sim.lambdaP = get_hazardRate(seq(.2,.4,length.out = 9),24), sigma=1,
                   theta=theta,gamma=gamma,kappa=1,distS="exponential",distC="exponential",nEvents=nEvents,
-                  L=L,nSim=1000, par.est=FALSE, fixed.min.studytime=TRUE, seed=235711)
+                  L=L,nSim=100, par.est=FALSE, fixed.min.studytime=FALSE, seed=235711)
 ```
 
 Show the results …
@@ -206,7 +206,7 @@ res$results %>%
   summarise_all(mean) %>%
   ungroup() %>%
   mutate(lambda = 1-exp(-lambda*24)) %>%
-  ggplot(aes(x=lambda,y=nPop,col=factor(type))) +
+  ggplot(aes(x=lambda,y=nPop-1161,col=factor(type))) +
   geom_point() +
   geom_line() +
   ggtitle(sprintf("Mean number of Additional Patients (nEvent=%i)",ceiling(nEvents))) +
