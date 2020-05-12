@@ -1,4 +1,4 @@
-# depends on: -
+# dependencies: -
 
 #' @title Event Distribution
 #' @description !!!!!!!!!!!!! shall not be exported !!!!!!!!!!!!!!!!!!!
@@ -17,7 +17,8 @@
 #'
 #' @export
 #' @examples
-#' prob.fun(r=1:10,.014,sigma=1,.009,kappa=1)
+#' prob_fun(r=1:10,.014,sigma=1,.009,kappa=1)
+#' prob_fun(r=c(1:10),.014,sigma=1,.009,kappa=1)
 prob_fun <- function(r,lambda,sigma=1,gamma,kappa=1){
   dweibull(r,sigma,lambda^(-1/sigma)) * (1-pweibull(r,kappa,gamma^(-1/kappa)))
 }

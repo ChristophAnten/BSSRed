@@ -25,5 +25,6 @@ resulting in an exponential distribution.}
 !!!!!!!!!!!!! shall not be exported !!!!!!!!!!!!!!!!!!!
 }
 \examples{
-prob.fun(r=1:10,.014,sigma=1,.009,kappa=1)
+prob_fun(r=1:10,.014,sigma=1,.009,kappa=1)
+prob_fun(r=c(1:10),.014,sigma=1,.009,kappa=1)
 }

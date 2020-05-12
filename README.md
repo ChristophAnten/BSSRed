@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# BSSRed (Blinded Sample Size Reestimation with Evnt-Driven Data.)
+# BSSRed (Blinded Sample Size Reestimation with Event-Driven Data.)
 
 <!-- badges: start -->
 
@@ -168,6 +168,7 @@ Show the results …
 
 ``` r
 library(plyr)
+#> Warning: package 'plyr' was built under R version 3.6.3
 library(dplyr)
 #> 
 #> Attaching package: 'dplyr'
@@ -182,6 +183,7 @@ library(dplyr)
 #> 
 #>     intersect, setdiff, setequal, union
 library(ggplot2)
+#> Warning: package 'ggplot2' was built under R version 3.6.3
 res$results %>%
   group_by(lambda,type) %>%
   summarise_all(mean) %>%
@@ -219,6 +221,7 @@ res$results %>%
 
 ``` r
 # scale_y_continuous(breaks = seq(0,700,by=100),limits = c(0,700))
+
 res$results %>%
   group_by(lambda,type) %>%
   mutate(power = BSSRed::pschoenfeld(theta = theta,

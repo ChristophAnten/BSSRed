@@ -4,18 +4,18 @@
 \alias{schoenfeld}
 \alias{nschoenfeld}
 \alias{pschoenfeld}
-\title{Schnoenfeld Formula}
+\title{Number of events or power calculation with the 'Schnoenfeld Formula'}
 \usage{
 nschoenfeld(theta, k = 1, alpha = 0.05, beta = 0.2,
-  alternative = "one-sided")
+  alternative = "two-sided")
 
-pschoenfeld(theta, nEvent, k = 1, alpha = 0.05,
-  alternative = "one-sided")
+pschoenfeld(theta, nEvents, k = 1, alpha = 0.05,
+  alternative = "two-sided")
 }
 \arguments{
-\item{theta}{vecor of hazard ratio theta.}
+\item{theta}{vecor of hazard ratios.}
 
-\item{k}{number >0. Defines the relative group sizes with the relation k:1.
+\item{k}{positive vektor. Defines the relative group sizes with the relation k:1.
 If k=1, equal group sizes are assumed (Note: that the formula is symmetric around k=1).}
 
 \item{alpha}{number between 0 and 1 defining the deserved type I error rate.
@@ -30,18 +30,25 @@ Default is 0.1 resulting in a power of 1-0.1=0.9 (90\%).}
 \item{nEvent}{vecor of number of events.}
 }
 \value{
-Returns the number of events needed to satisfy the given assumptions.
+A data frame containing the input values and calculated number of events needed to satisfy the given assumptions or
+the power achieved with the given number of events.
 }
 \description{
 Calculates the number of events needed to achieve a targeted
-power (or the power given the number of events) in a two group scenario with
-the hazard ratio \code{theta}, balance between the groups \code{k} and the alpha niveau \code{alpha}.
+power (or the power given the number of events) in a two group scenario for all combinations of provided
+hazard ratios \code{theta}, balance between the groups \code{k} and the alpha niveaus \code{alpha}.
 }
 \examples{
-# for a assumed hazard ration of theta = .7
+# for a assumed hazard ratio of theta = .7
 # in a design with a treatment to control group allocation of 2:1 resulting in k = 2
-# a power of 1-beta=80\%
-# and a significance niveau of alpha = .025
-nschoenfeld(theta = .7,k=2,alpha=.05,beta=.1,alternative = "two-sided")
+# power of 1-beta=90\%
+# and a two sided significance niveau of alpha = .05
+x <- nschoenfeld(theta = .7, k=2, alpha=.05, beta=.1, alternative = "two-sided")
 
+
+# with 20 events less the power would be
+pschoenfeld(theta=.7, nEvents=x$nEvents-20, k=2, alpha=.05, alternative = "two-sided")
+}
+\references{
+Schoenfeld, D. (1983). \emph{Sample-Size Formula for the Proportional-Hazards Regression Model}. Biometrics, 39(2), 499-503. doi:10.2307/2531021
 }

@@ -25,16 +25,35 @@
 #' @param nSim a number defining the number of simulations per parametrisation.
 #' @param par.est a boolean. If \code{TRUE} the parameter-estimates and teststatistik will be calculated. Warning: will greatliy increase runtime.
 #' @param fixed.min.studytime a boolean. If \code{TRUE} the simulated studies will not stop before \code{L}. If \code{FALSE} the study will end when the targeted amount of events is reached.
-#' @param seed
+#' @param seed a number defining the seed.
 #'
 #' @return a list containing the results of each simulation as a data.frame.
 #' @export
 #'
 #' @examples
-sim_BSSRed <- function(N,tn,M,tm,addRecT,sim.lambdaP, sigma,
+
+# set_recruitment(c(800,400),1:10)
+# sim_BSSRed(1,2,3,4,1:2,3:4,0,0:3,3,1:2,6:7,0,0,4)
+sim_BSSRed <- function(N,addRecT,sim.lambdaP, sigma,...,
                        theta.star,gamma,kappa,distS,distC,nEvents,
                        L,nSim=100, par.est=FALSE, fixed.min.studytime=TRUE, seed=235711){
 
+  if(!("recruit.frame" %in% class(N))){
+
+    N <- list(...)$tn
+  }
+
+
+
+  simPar <- expand.grid(addRecT=addRecT,
+                        lambdaC=lambdaC,
+                        sigma,
+                        theta.star=theta.star,
+                        gamma=gamma,
+                        kappa=kappa,
+                        nEvents=nEvents,
+                        L=L)
+  return(simPar)
   # lambdaP.vec <- -log(seq(.6,.8,length.out = 9))/24
   res <- list()
   nRep <- length(addRecT)
@@ -125,3 +144,8 @@ sim_BSSRed <- function(N,tn,M,tm,addRecT,sim.lambdaP, sigma,
   return(res)
 } # end function
 
+# plot(NULL,xlim = c(-10,10),ylim = c(-10,10))
+# text(0, 0, expression(paste("Enjoy the following equation!: ",hat(rho) == (sigma[t] * bar(lambda))[t[i]] +
+#                               sum(x[i]^{-1}, i==1, n)+
+#                               frac(x[i], n)^{-1})))
+# ?text

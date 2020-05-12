@@ -2,7 +2,7 @@
 % Please edit documentation in R/calc_expEvents.R
 \name{calc_expEvents}
 \alias{calc_expEvents}
-\title{calc_expEvents}
+\title{Calculates the expected number of events}
 \usage{
 calc_expEvents(N, theta, L = Inf, tn, lambda, sigma = 1,
   distS = "exponential", gamma, kappa = 1, distC = "exponential")

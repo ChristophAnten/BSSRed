@@ -1,19 +1,37 @@
-# install locally:
+# #################################################################### #
+#                                                                      #
+#     You can learn more about package authoring with RStudio at:      #
+#                                                                      #
+#       http://r-pkgs.had.co.nz/                                       #
+#                                                                      #
+#     Some useful keyboard shortcuts for package authoring:            #
+#                                                                      #
+#       Install Package:           'Ctrl + Shift + B'                  #
+#       Check Package:             'Ctrl + Shift + E'                  #
+#       Test Package:              'Ctrl + Shift + T'                  #
+#                                                                      #
+# #################################################################### #
+
+
+# ------------------------------------------------- # install locally: #
+
 library("devtools")
 install_git(url="https://github.com/ChristophAnten/BSSRed.git",
             lib="~/temp/test", upgrade=FALSE)
 library("BSSRed", lib.loc="~/temp/test")
 
-# install globally:
+# ------------------------------------------------ # install globally: #
+
 library("devtools")
 install_git(url="https://github.com/ChristophAnten/BSSRed.git",
 upgrade=FALSE)
 library("bayesmeta")
 
-# init a test
-# usethis::use_test("nschoenfeld")
+# ----------------------------------------------------- # init a test: #
 
-To Do:
+usethis::use_test("nschoenfeld")
+
+# ----------------------------------------------------------- # To Do: #
 
 - Input Checks on all functions
 - complete recruitment function and add to git -> CHECK!
@@ -21,3 +39,62 @@ To Do:
 - add and verify output to all the functions
 - complete base grafics
 (- add optional ggplot grafics)
+- add maybe the function: set_studyPlan -> CHECK!
+
+# ------------------------------------------------------- # functions: #
+calc_expEvents
+ - dependencies: prob_fun
+ - output: functional (no special print)
+ - help: 'no export' (half way)
+ - test: 2 scenarios (Friede+1)
+cut_dfSim
+ - dependencies:
+ - output:
+ - help:
+ - test:
+get_hazardRate
+ - dependencies:
+ - output:
+ - help:
+ - test:
+plot_dfSim
+ - dependencies:
+ - output:
+ - help:
+ - test:
+prob_fun
+ - dependencies: -
+ - output: no user
+ - help: no export
+ - test: none
+rEstimate
+ - dependencies:
+ - output:
+ - help:
+ - test:
+schoenfeld
+ - dependencies: -
+ - output: check
+ - help: complete
+ - test: general testing
+set_recruitment
+ - dependencies: -
+ - output: check
+ - help: xxx
+ - test: xxx
+ - matrix input needed!
+set_studyPlan
+ - dependencies: nschoenfeld, pschoenfeld, calc_expEvents, rEstimate
+ - output: nice
+ - help: xxx
+ - test: xxx
+simSurvData
+ - dependencies:
+ - output:
+ - help:
+ - test:
+sim_BSSRed
+ - dependencies:
+ - output:
+ - help:
+ - test:

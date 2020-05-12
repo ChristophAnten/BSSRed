@@ -1,12 +1,16 @@
-#' @title Schnoenfeld Formula
+# dependencies: -
+
+#' @title Number of events or power calculation with the 'Schnoenfeld Formula'
 #' @description Calculates the number of events needed to achieve a targeted
-#' power (or the power given the number of events) in a two group scenario with
-#' the hazard ratio \code{theta}, balance between the groups \code{k} and the alpha niveau \code{alpha}.
-#' @name schoenfeld
+#' power (or the power given the number of events) in a two group scenario for all combinations of provided
+#' hazard ratios \code{theta}, balance between the groups \code{k} and the alpha niveaus \code{alpha}.
 #'
-#' @param theta vecor of hazard ratio theta.
+#' @name schoenfeld
+#' @aliases pschoenfeld
+#'
+#' @param theta vecor of hazard ratios.
 #' @param nEvent vecor of number of events.
-#' @param k number >0. Defines the relative group sizes with the relation k:1.
+#' @param k positive vektor. Defines the relative group sizes with the relation k:1.
 #' If k=1, equal group sizes are assumed (Note: that the formula is symmetric around k=1).
 #' @param alpha number between 0 and 1 defining the deserved type I error rate.
 #'  Default is 0.05.
@@ -15,64 +19,74 @@
 #' @param alternative a string; either \code{'one-sided'} or \code{'two-sided'}. Default is
 #'  \code{'two-sided'}.
 #'
-#' @return Returns the number of events needed to satisfy the given assumptions.
+#' @return A data frame containing the input values and calculated number of events needed to satisfy the given assumptions or
+#' the power achieved with the given number of events.
 #' @export
 #'
-#' @examples
-#' # for a assumed hazard ration of theta = .7
-#' # in a design with a treatment to control group allocation of 2:1 resulting in k = 2
-#' # a power of 1-beta=80%
-#' # and a significance niveau of alpha = .025
-#' nschoenfeld(theta = .7,k=2,alpha=.05,beta=.1,alternative = "two-sided")
+#' @references Schoenfeld, D. (1983). \emph{Sample-Size Formula for the Proportional-Hazards Regression Model}. Biometrics, 39(2), 499-503. doi:10.2307/2531021
 #'
-#' @aliases pschoenfeld
-nschoenfeld <- function(theta,k=1,alpha=.05,beta=.2,alternative = "one-sided"){
-  if (theta <= 0){
-    stop("The assumed effect size must be greater than 0!")
+#' @examples
+#' # for a assumed hazard ratio of theta = .7
+#' # in a design with a treatment to control group allocation of 2:1 resulting in k = 2
+#' # power of 1-beta=90%
+#' # and a two sided significance niveau of alpha = .05
+#' x <- nschoenfeld(theta = .7, k=2, alpha=.05, beta=.1, alternative = "two-sided")
+#'
+#'
+#' # with 20 events less the power would be
+#' pschoenfeld(theta=.7, nEvents=x$nEvents-20, k=2, alpha=.05, alternative = "two-sided")
+nschoenfeld <- function(theta,k=1,alpha=.05,beta=.2,alternative = "two-sided"){
+  if (min(theta) <= 0){
+    stop("The assumed effect size 'theta' must be greater than 0!")
   }
-  if ((k==Inf)|(k<=0)){
+  if ((max(k)==Inf)|(min(k)<=0)){
     stop("The allokation parameter k must be greater 0 and smaller than Inf!")
   }
-  if ((alpha>=1)|(alpha<=0)){
+  if ((max(alpha)>=1)|(min(alpha)<=0)){
     stop("The allokation parameter k must be greater 0 and smaller than Inf!")
   }
-  if ((beta>=1)|(beta<=0)){
+  if ((max(beta)>=1)|(min(beta)<=0)){
     stop("The allokation parameter k must be greater 0 and smaller than Inf!")
   }
-  if (!((alternative =="two-sided")|(alternative == "one-sided"))){
+  if (sum(1-(alternative %in% c("two-sided","one-sided")))>0){
     stop("The alternative must be one of 'two-sided' or 'one-sided' (default)!")
   }
-  if (alternative == "two-sided")
-    alpha = alpha/2
+
+  par <- expand.grid(alternative=alternative, beta=beta, alpha=alpha, k=k, theta=theta)[,5:1]
 
   return(
-    (1+k)^2 * (qnorm(1-alpha) + qnorm(1-beta))^2 /
-      (k * log(theta)^2)
+    cbind(par,
+          nEvents = (1+par$k)^2 / (par$k * log(par$theta)^2) *
+            (qnorm(1-par$alpha/2^(par$alternative=="two-sided")) + qnorm(1-par$beta))^2)
   )
 }
 
 #' @rdname schoenfeld
 #' @export
-pschoenfeld <- function(theta,nEvent,k=1,alpha=.05,alternative = "one-sided"){
-  #stopifnot(is.numeric())
-  if (theta <= 0){
-    stop("The assumed effect size must be greater than 0!")
+pschoenfeld <- function(theta,nEvents,k=1,alpha=.05,alternative = "two-sided"){
+  if (min(theta) <= 0){
+    stop("The assumed effect size 'theta' must be greater than 0!")
   }
-  if ((k==Inf)|(k<=0)){
-    stop("The allokation parameter k must be greater 0 and smaller than Inf!")
-  }
-  if ((alpha>=1)|(alpha<=0)){
-    stop("The allokation parameter k must be greater 0 and smaller than Inf!")
-  }
-  if (sum(nEvent<1)>0){
+  if (min(nEvents)<1){
     stop("The nuber of Events must be greater equal 1.")
   }
-  if (!((alternative =="two-sided")|(alternative == "one-sided"))){
+  if ((max(k)==Inf)|(min(k)<=0)){
+    stop("The allokation parameter k must be greater 0 and smaller than Inf!")
+  }
+  if ((max(alpha)>=1)|(min(alpha)<=0)){
+    stop("The allokation parameter k must be greater 0 and smaller than Inf!")
+  }
+  if (sum(1-(alternative %in% c("two-sided","one-sided")))>0){
     stop("The alternative must be one of 'two-sided' or 'one-sided' (default)!")
   }
-  if (alternative == "two-sided")
-    alpha = alpha/2
 
+  par <- expand.grid(alternative=alternative, alpha=alpha, k=k, nEvents=nEvents, theta=theta)[,5:1]
+
+  return(
+    cbind(par,
+          power = 1-pnorm((sqrt(par$nEvents*par$k)*log(par$theta)/(1+par$k) +
+                               qnorm(1-par$alpha/2^(par$alternative=="two-sided")))))
+  )
   return(
     1-pnorm((sqrt(nEvent*k)*log(theta)/(1+k) + qnorm(1-alpha)))
   )

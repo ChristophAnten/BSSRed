@@ -11,14 +11,6 @@ sim_BSSRed(N, tn, M, tm, addRecT, sim.lambdaP, sigma=1, theta.star, gamma, kappa
 \arguments{
 \item{N}{a two-column matrix which represents the size of recruitment per group.}
 
-\item{tn}{a vector of length \code{NROW(N)} defining the timepoint of each recruitment-batch.}
-
-\item{M}{a matrix defining the ongoining recruitment after the planned N. Default is the
-last row of N.}
-
-\item{tm}{a vector of length \code{NROW(M)} defining the timepoint of each future
-recruitment-batch. Default is the next equidistant timepoint after the last of \code{tn}.}
-
 \item{addRecT}{a vector defining the allowed additional recruitment batches.}
 
 \item{sim.lambdaP}{a vector defining the hazard rates of the control group.}
@@ -45,7 +37,15 @@ recruitment-batch. Default is the next equidistant timepoint after the last of \
 
 \item{fixed.min.studytime}{a boolean. If \code{TRUE} the simulated studies will not stop before \code{L}. If \code{FALSE} the study will end when the targeted amount of events is reached.}
 
-\item{seed}{}
+\item{seed}{a number defining the seed.}
+
+\item{tn}{a vector of length \code{NROW(N)} defining the timepoint of each recruitment-batch.}
+
+\item{M}{a matrix defining the ongoining recruitment after the planned N. Default is the
+last row of N.}
+
+\item{tm}{a vector of length \code{NROW(M)} defining the timepoint of each future
+recruitment-batch. Default is the next equidistant timepoint after the last of \code{tn}.}
 }
 \value{
 a list containing the results of each simulation as a data.frame.

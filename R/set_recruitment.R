@@ -69,8 +69,19 @@ set_recruitment <- function(targetN,timePoints,fn="linear",...){
       cs = cs+(inc %% 1) - (cs > 0.5)
     }
   }
-  return(data.frame("T" = r[,1],
+  out <- data.frame("T" = r[,1],
                     "C" = r[,2],
-                    "time" = rec_time))
+                    "time" = rec_time)
+  class(out) <- c("recruit.frame",class(out))
+  return(out)
 }
+# set_recruitment(1200,1:10,k=2,fn="linear")
 
+
+as.recruitment <- function(N,t,...){
+  if ("recruit.frame" %in% class(N))
+    return(N)
+  if (is.data.frame(N)){
+    # define treatment define control define time variables.
+  }
+}
