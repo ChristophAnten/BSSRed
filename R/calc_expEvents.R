@@ -32,10 +32,10 @@
 #' @examples
 #' # with a recruitment time of 5 month and recruiting 30 Patients per month
 #' # assuming a hazard ratio of .7 and a rate of two year survival of .7
-#' # as well as a two year censor rate of .3 under exponential distribution
+#' # as well as a two year censor rate of .2 under exponential distribution
 #' # and administrative censoring after 10 month.
 #' N <- matrix(rep(50,10),ncol=2)
-#' calc_expEvents(N=N ,theta = .7, L=10, lambda=-log(.7)/24, gamma=-log(.2)/24)
+#' calc_expEvents(N=N ,theta = .7, L=10, lambda=-log(.7)/24, gamma=-log(.8)/24)
 calc_expEvents <- function(N, theta, L=Inf, tn,
                            lambda, sigma=1, distS="exponential",
                            gamma, kappa=1, distC="exponential",

@@ -12,9 +12,11 @@
 #' @title Simulation of a Survival Data.Frame
 #' @description Simulates a two group data.frame including time to event, recruiting time and status.
 #'
+#' @details !!!!!!!!!!!!!!!!!!!!11how the data is simulated!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+#'
 #' @param N a two column matrix containing the size of both recruitment groups per
 #' row, representing the number of recruited patients per group and timepoint (\code{tn}).
-#' @param tn a vecotr of length = \code{NROW(N)} defining the timepoint of recruiting.
+#' @param tn a vecotr of length = \code{NROW(N)} defining the timepoint of recruiting. Default is \code{0:(NROW(N)-1)}.
 #' @param L a number defining the timepoint for administrative censoring.
 #' If no administrative censoring is planned \code{L=Inf}. Default is L=Inf.
 #' @param lambda a number greater 0 defining the hazard rate for the survival process of
@@ -38,7 +40,7 @@ simSurvData <- function(N, tn, lambda, sigma, theta, gamma,kappa,distS = "expone
   n2 <- sum(N[,2])
 
   if (missing(tn)){
-    tn <- 1:NROW(N)
+    tn <- 0:(NROW(N)-1)
   }
   rec_time <- c(rep(tn,N[,1]),rep(tn,N[,2]))
   group <- c(rep(0,n1),rep(1,n2))

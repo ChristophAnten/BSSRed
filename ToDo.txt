@@ -48,10 +48,10 @@ calc_expEvents
  - help: 'no export' (half way)
  - test: 2 scenarios (Friede+1)
 cut_dfSim
- - dependencies:
- - output:
- - help:
- - test:
+ - dependencies: -
+ - output: perfect
+ - help: correct
+ - test: none
 get_hazardRate
  - dependencies:
  - output:
@@ -89,10 +89,10 @@ set_studyPlan
  - help: xxx
  - test: xxx
 simSurvData
- - dependencies:
- - output:
- - help:
- - test:
+ - dependencies: -
+ - output: perfect
+ - help: (details are missing) xxx
+ - test: xxx
 sim_BSSRed
  - dependencies:
  - output:
