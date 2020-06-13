@@ -7,6 +7,8 @@
 \usage{
 get_hazardRate(prop,time,theta=NULL)
 
+get_eventProportion(hazard,time,theta=NULL)
+
 get_eventProportion(hazard, time, theta = NULL)
 }
 \arguments{
@@ -22,7 +24,7 @@ get_eventProportion(hazard, time, theta = NULL)
 a vector defining the hazard rate per timeintevall of length 1.
 }
 \description{
-Get hazard rates
+
 }
 \examples{
 # Assuming, that 30\% of patients in the control group have an event after 24 month,

@@ -7,18 +7,19 @@
 set_recruitment(targetN, timePoints, fn = "linear", ...)
 }
 \arguments{
-\item{targetN}{a 1 or 2 length vector defining the targeted total number of recruitments.
-If \code{targetN} is a two-length vector the total number recruitments per group is defined,
-where the treatment group is announced first.}
+\item{targetN}{a vector of length 1 or two defining the targeted total number of recruitments.
+If \code{targetN} is of length tow the total number recruitments per group is defined.
+The first entry refers to the treatment group.}
 
 \item{timePoints}{a vector defining the timepoint of each recruitment or a positive number defining the
 amount of recruitments (needs \code{time} to be set).}
 
 \item{fn}{a string defining the shape of the cummulative recruitment. Default is set to "linear".}
 
-\item{k}{a positive number defining the k:1 treatment allocation (treatment:control)}
+\item{k}{a positive number defining the k:1 treatment allocation (treatment:control). Optional, if
+\code{targetN} is vector of length two.}
 
-\item{timeLimits}{a two length vector defining the timepoint of the first and the last recruitment.
+\item{timeLimits}{a vector of length two defining the timepoint of the first and the last recruitment.
 Optional if \code{timePoints} is a vector defining each timepoint of recruitment.}
 }
 \value{

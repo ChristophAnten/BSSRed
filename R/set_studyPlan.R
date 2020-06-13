@@ -28,18 +28,26 @@
 #'               dist_surv = "exponential",
 #'               dist_censor = "exponential",beta=.1)
 
+# set_studyPlan(recruitment=set_recruitment(c(2400,1200),1:20),
+#                              rec_time = 10,
+#                              study_end = 22,
+#                              lambdaC = get_hazardRate(.3,24),
+#                              theta = .7,
+#                              gamma = get_hazardRate(.2,24),
+#                              dist_surv = "exponential",
+#                              dist_censor = "exponential",beta=.1)
 
-recruitment=set_recruitment(c(2400,1200),1:20);
-              rec_time = 10;
-              study_end = 22;
-              lambdaC = get_hazardRate(.3,24);
-              theta = .7;
-              gamma = get_hazardRate(.2,24);
-              dist_surv = "exponential";
-              dist_censor = "exponential";
-              beta=.1;
-              alpha=.05;
-              alternative="two-sided"
+# recruitment=set_recruitment(c(2400,1200),1:20);
+#               rec_time = 10;
+#               study_end = 22;
+#               lambdaC = get_hazardRate(.3,24);
+#               theta = .7;
+#               gamma = get_hazardRate(.2,24);
+#               dist_surv = "exponential";
+#               dist_censor = "exponential";
+#               beta=.1;
+#               alpha=.05;
+#               alternative="two-sided"
 # eine größe weglassen: study_end, rec_time, power, recruitment?
 # wenn alle gegeben sind berechnet alle optionen um das Modell einzuhalten.
 # recruitment
@@ -157,13 +165,13 @@ set_studyPlan <- function(recruitment,rec_time,study_end,
   studyPlan
 }
 # set_studyPlan(recruitment=set_recruitment(c(2400,1200),1:20),
-#                              rec_time = 10,
-#                              study_end = 22,
-#                            lambdaC = get_hazardRate(.3,24),
-#                              theta = .7,
-#                              gamma = get_hazardRate(.2,24),
-#                              dist_surv = "exponential",
-#                              dist_censor = "exponential",beta=.1)
+#               rec_time = 10,
+#               study_end = 22,
+#               lambdaC = get_hazardRate(.3,24),
+#               theta = .7,
+#               gamma = get_hazardRate(.2,24),
+#               dist_surv = "exponential",
+#               dist_censor = "exponential",beta=.1)
 print.studyPlan <- function(studyPlan){
   cat("Initial number of event calculation with the schoenfeld formula:\n")
   print(data.frame(alpha = studyPlan$alpha,

@@ -4,14 +4,24 @@
 \alias{simSurvData}
 \title{Simulation of a Survival Data.Frame}
 \usage{
-simSurvData(N, tn, lambda, sigma, theta, gamma, kappa,
-  distS = "exponential", distC = "exponential", L)
+simSurvData(
+  N,
+  tn,
+  lambda,
+  sigma,
+  theta,
+  gamma,
+  kappa,
+  distS = "exponential",
+  distC = "exponential",
+  L
+)
 }
 \arguments{
 \item{N}{a two column matrix containing the size of both recruitment groups per
 row, representing the number of recruited patients per group and timepoint (\code{tn}).}
 
-\item{tn}{a vecotr of length = \code{NROW(N)} defining the timepoint of recruiting.}
+\item{tn}{a vecotr of length = \code{NROW(N)} defining the timepoint of recruiting. Default is \code{0:(NROW(N)-1)}.}
 
 \item{lambda}{a number greater 0 defining the hazard rate for the survival process of
 group1. For the parametrization see \code{details}.}
@@ -34,6 +44,9 @@ grouping (\code{group}) and status (\code{status} (1 = event occured)).
 }
 \description{
 Simulates a two group data.frame including time to event, recruiting time and status.
+}
+\details{
+!!!!!!!!!!!!!!!!!!!!11how the data is simulated!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 }
 \examples{
 N <- matrix(rep(50,10),ncol=2)

@@ -4,9 +4,21 @@
 \alias{btEstimate}
 \title{Blinded Study Time Estimation}
 \usage{
-btEstimate(dfSurv, theta.star, N, tn, M, tm, nEvents, L = L,
-  sigma = sigma, distS = distS, gamma = gamma, kappa = kappa,
-  distC = distC)
+btEstimate(
+  dfSurv,
+  theta.star,
+  N,
+  tn,
+  M,
+  tm,
+  nEvents,
+  L = L,
+  sigma = sigma,
+  distS = distS,
+  gamma = gamma,
+  kappa = kappa,
+  distC = distC
+)
 }
 \arguments{
 \item{dfSurv}{a data.frame containing the variables:

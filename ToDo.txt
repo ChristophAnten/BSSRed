@@ -53,15 +53,15 @@ cut_dfSim
  - help: correct
  - test: none
 get_hazardRate
- - dependencies:
- - output:
- - help:
- - test:
+ - dependencies: -
+ - output: simple
+ - help: fine
+ - test: none
 plot_dfSim
- - dependencies:
- - output:
- - help:
- - test:
+ - dependencies: -
+ - output: nice
+ - help: nice
+ - test: none
 prob_fun
  - dependencies: -
  - output: no user

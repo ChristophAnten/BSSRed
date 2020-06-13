@@ -4,9 +4,20 @@
 \alias{set_studyPlan}
 \title{Title}
 \usage{
-set_studyPlan(recruitment, rec_time, study_end, lambdaC, theta, gamma,
-  dist_surv, dist_censor, alpha = 0.05, beta = 0.2,
-  alternative = "two-sided", ...)
+set_studyPlan(
+  recruitment,
+  rec_time,
+  study_end,
+  lambdaC,
+  theta,
+  gamma,
+  dist_surv,
+  dist_censor,
+  alpha = 0.05,
+  beta = 0.2,
+  alternative = "two-sided",
+  ...
+)
 }
 \arguments{
 \item{lambdaC}{a number defining the hazard rate of the control group.}

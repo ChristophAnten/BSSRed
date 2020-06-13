@@ -69,9 +69,11 @@ simSurvData <- function(N, tn, lambda, sigma, theta, gamma,kappa,distS = "expone
     status <- as.numeric(Tlat < C)
   }
   # data set
-  data.frame(id=1:sum(N),
+  out <- data.frame(id=1:sum(N),
              tn=rec_time,
              time=time,
              status=status,
              group=group)
+  class(out) <- c("dfSim","data.frame")
+  out
 }

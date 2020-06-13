@@ -4,19 +4,30 @@
 \alias{calc_expEvents}
 \title{Calculates the expected number of events}
 \usage{
-calc_expEvents(N, theta, L = Inf, tn, lambda, sigma = 1,
-  distS = "exponential", gamma, kappa = 1, distC = "exponential")
+calc_expEvents(
+  N,
+  theta,
+  L = Inf,
+  tn,
+  lambda,
+  sigma = 1,
+  distS = "exponential",
+  gamma,
+  kappa = 1,
+  distC = "exponential",
+  col_Sums = TRUE
+)
 }
 \arguments{
 \item{N}{a two column matrix containing the size of both recruitment groups per
-row, representing the number of recruited patients per group and timepoint (\code{t}).}
+row, representing the number of recruited patients per group and timepoint (\code{tn}).}
 
 \item{theta}{a number greater 0 defining the assumed hazard ratio.}
 
-\item{L}{a number defining the timepoint for administrative censoring.
+\item{L}{a number greater 0 defining the timepoint for administrative censoring.
 If no administrative censoring is planned \code{L=Inf}. Default is L=Inf.}
 
-\item{tn}{a numeric vector defining the recruitment time. Default is \code{0:(NROW(N)-1)}.}
+\item{tn}{a numeric vector defining the recruitment timepoint. Default is \code{0:(NROW(N)-1)}.}
 
 \item{lambda}{a number greater 0 defining the hazard rate for the survival process of
 group1. For the parametrization see \code{details}.}
@@ -29,9 +40,12 @@ Default is 1 resulting in an exponential distribution.}
 and the censor process. Default is 'exponential'.}
 
 \item{gamma}{a number greater 0 defining the overall hazard rate for the censor process.}
+
+\item{col_Sums}{a boolen value. If set to FALSE, the function  will return the expected
+number of events per recruitment batch at time T instead of the sums per group.}
 }
 \value{
-a vector containing the expected number of events per group.
+a vector containing the expected number of events per group at time L.
 }
 \description{
 !!!!!!!!!!!!! shall not be exported !!!!!!!!!!!!!!!!!!!
@@ -48,8 +62,8 @@ with density function
 \examples{
 # with a recruitment time of 5 month and recruiting 30 Patients per month
 # assuming a hazard ratio of .7 and a rate of two year survival of .7
-# as well as a two year censor rate of .3 under exponential distribution
+# as well as a two year censor rate of .2 under exponential distribution
 # and administrative censoring after 10 month.
 N <- matrix(rep(50,10),ncol=2)
-calc_expEvents(N=N ,theta = .7, L=10, lambda=-log(.7)/24, gamma=-log(.3)/24)
+calc_expEvents(N=N ,theta = .7, L=10, lambda=-log(.7)/24, gamma=-log(.8)/24)
 }

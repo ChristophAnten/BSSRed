@@ -6,11 +6,9 @@
 \alias{pschoenfeld}
 \title{Number of events or power calculation with the 'Schnoenfeld Formula'}
 \usage{
-nschoenfeld(theta, k = 1, alpha = 0.05, beta = 0.2,
-  alternative = "two-sided")
+nschoenfeld(theta, k = 1, alpha = 0.05, beta = 0.2, alternative = "two-sided")
 
-pschoenfeld(theta, nEvents, k = 1, alpha = 0.05,
-  alternative = "two-sided")
+pschoenfeld(theta, nEvents, k = 1, alpha = 0.05, alternative = "two-sided")
 }
 \arguments{
 \item{theta}{vecor of hazard ratios.}

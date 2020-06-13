@@ -2,7 +2,8 @@
 
 
 #' @title Get hazard rates
-#' @describeIn Functions to calculate hazard rates by the proportion of confirmed events at given time.
+#' @describe Functions to calculate hazard rates by the proportion of confirmed events at given time.
+#' @description
 #'
 #' @usage get_hazardRate(prop,time,theta=NULL)
 #' @usage get_eventProportion(hazard,time,theta=NULL)

@@ -5,14 +5,15 @@
 #' @description A function to build a recruitment dataframe by some general conditions e.g. targeted total number of recruitments per group
 #' and recruitment timePoints.
 #'
-#' @param targetN a 1 or 2 length vector defining the targeted total number of recruitments.
-#' If \code{targetN} is a two-length vector the total number recruitments per group is defined,
-#' where the treatment group is announced first.
+#' @param targetN a vector of length 1 or two defining the targeted total number of recruitments.
+#' If \code{targetN} is of length tow the total number recruitments per group is defined.
+#' The first entry refers to the treatment group.
 #' @param timePoints a vector defining the timepoint of each recruitment or a positive number defining the
 #' amount of recruitments (needs \code{time} to be set).
 #' @param fn a string defining the shape of the cummulative recruitment. Default is set to "linear".
-#' @param k a positive number defining the k:1 treatment allocation (treatment:control)
-#' @param timeLimits a two length vector defining the timepoint of the first and the last recruitment.
+#' @param k a positive number defining the k:1 treatment allocation (treatment:control). Optional, if
+#' \code{targetN} is vector of length two.
+#' @param timeLimits a vector of length two defining the timepoint of the first and the last recruitment.
 #' Optional if \code{timePoints} is a vector defining each timepoint of recruitment.
 #'
 #' @return a \code{data.frame} containing the number of recruitments of the treament and control group \code{"T"} and \code{"C"} per timepoint \code{time}.
@@ -78,10 +79,14 @@ set_recruitment <- function(targetN,timePoints,fn="linear",...){
 # set_recruitment(1200,1:10,k=2,fn="linear")
 
 
-as.recruitment <- function(N,t,...){
-  if ("recruit.frame" %in% class(N))
-    return(N)
-  if (is.data.frame(N)){
-    # define treatment define control define time variables.
+as.recruitment <- function(data,treatment,control,time){
+  if ("recruit.frame" %in% class(data))
+    return(data)
+
+  if (missing(time)){
+    time <- 0:(NROW(data)-1)
+    return(cbind(data[,c(treatment,control)],time))
+  } else {
+    return(data[,c(treatment,control,time)])
   }
 }

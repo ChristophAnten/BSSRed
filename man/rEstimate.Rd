@@ -4,8 +4,22 @@
 \alias{rEstimate}
 \title{Recruitment Time Estimation}
 \usage{
-rEstimate(N, tn, M, tm, theta, nEvents, L, from = 1, lambda, sigma = 1,
-  distS = "exponential", gamma, kappa = 1, distC = "exponential")
+rEstimate(
+  N,
+  tn,
+  M,
+  tm,
+  theta,
+  nEvents,
+  L,
+  from = 1,
+  lambda,
+  sigma = 1,
+  distS = "exponential",
+  gamma,
+  kappa = 1,
+  distC = "exponential"
+)
 }
 \arguments{
 \item{N}{a two column matrix containing the size of both recruitment groups per
