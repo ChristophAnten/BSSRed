@@ -73,14 +73,18 @@ set_recruitment <- function(targetN,timePoints,fn="linear",...){
   out <- data.frame("T" = r[,1],
                     "C" = r[,2],
                     "time" = rec_time)
-  class(out) <- c("recruit.frame",class(out))
+  class(out) <- c("recruit_frame",class(out))
   return(out)
 }
 # set_recruitment(1200,1:10,k=2,fn="linear")
 
+plot.recruit_frame <- function(data,...){
+  out=data.frame(r=c(cumsum(data[,1]),cumsum(data[,2])),time=rep(data[,3],2),group = rep(c("T","C"),each=NROW(data)))
+  barplot(formula = r~group+time,data=out,ylab = "cumulative recuitments")
+}
 
 as.recruitment <- function(data,treatment,control,time){
-  if ("recruit.frame" %in% class(data))
+  if ("recruit_frame" %in% class(data))
     return(data)
 
   if (missing(time)){
