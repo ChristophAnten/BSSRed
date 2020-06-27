@@ -49,6 +49,8 @@ calc_expEvents <- function(N, theta, L=Inf, tn,
     N <- N[1:L,]
     warning("The administrative censoring takes place before recruitment is finished.")
   }
+  if(sum(duplicated(tn))>0)
+    stop(paste0("There are multiple recruitments at the same timepoint. Namely tn = ",paste(tn[duplicated(tn)],collapse=", "),"."))
 
 
   lambda.vec = matrix(c(lambda,lambda*theta),ncol=2)
@@ -56,14 +58,14 @@ calc_expEvents <- function(N, theta, L=Inf, tn,
   if ((distC=="exponential")&(distS=="exponential")){
     if (col_Sums)
       return(colSums((N*(1-exp(-(lambda.vec + gamma) %x% (L-tn)))) *
-                     matrix(rep(lambda.vec/(lambda.vec+gamma),each=R),ncol=2)))
-    return((N*(1-exp(-(lambda.vec + gamma) %x% (L-tn)))) *
-                     matrix(rep(lambda.vec/(lambda.vec+gamma),each=R),ncol=2))
+                       matrix(rep(lambda.vec/(lambda.vec+gamma),each=R),ncol=2)))
+    return((N*(1-exp(-(lambda.vec + gamma) %x% (L-tn[1:R])))) *
+             matrix(rep(lambda.vec/(lambda.vec+gamma),each=R),ncol=2))
   } else {
     tmpN <- N*0
     for (i in 1:R){
-      tmpN[i,] <- N[i,]*c(integrate(prob.fun,0,(L-tn[i]),lambda=lambda.vec[1],gamma=gamma,sigma=sigma,kappa=kappa)$value,
-                          integrate(prob.fun,0,(L-tn[i]),lambda=lambda.vec[2],gamma=gamma,sigma=sigma,kappa=kappa)$value)
+      tmpN[i,] <- N[i,]*c(integrate(prob_fun,0,(L-tn[i]),lambda=lambda.vec[1],gamma=gamma,sigma=sigma,kappa=kappa)$value,
+                          integrate(prob_fun,0,(L-tn[i]),lambda=lambda.vec[2],gamma=gamma,sigma=sigma,kappa=kappa)$value)
     }
     if (col_Sums)
       return(colSums(tmpN))

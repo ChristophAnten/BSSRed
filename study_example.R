@@ -74,7 +74,7 @@ barplot(names.arg =tn,height=(t(cbind(cumsum(N[,1]),cumsum(N[,2])))),
 
 
 # - simulating study
-res <- ?sim_BSSRed(N=2*N,tn=tn,M=2*N[R,,drop=F],tm=tn[R]+1,addRecT=c(0,3,6), # add number of patients or time
+res <- sim_BSSRed(N=2*N,tn=tn,M=2*N[R,,drop=F],tm=tn[R]+1,addRecT=c(0,3,6), # add number of patients or time
                   sim.lambdaP = get_hazardRate(seq(propP-.1,propP+.1,length.out = 9),timeP), sigma=1,
                   theta=theta,gamma=gamma,kappa=1,distS="exponential",distC="exponential",nEvents=nEvents,
                   L=L,nSim=100, par.est=FALSE, fixed.min.studytime=TRUE, seed=235711)
