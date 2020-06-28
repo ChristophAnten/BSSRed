@@ -82,48 +82,54 @@ res <- sim_BSSRed(N=2*N,tn=tn,M=2*N[R,,drop=F],tm=tn[R]+1,addRecT=c(0,3,6), # ad
 #                   sim.lambdaP = par.list$sim.lambdaP, sigma=1,
 #                   theta=theta,gamma=gamma,kappa=1,distS="exponential",distC="exponential",nEvents=nEvents,
 #                   L=par.list$L,nSim=100, par.est=FALSE, fixed.min.studytime=TRUE, seed=235711)
-
+res <- resWoPlus
+res <- resWoPlusOnL
 library(plyr)
 library(dplyr)
 library(ggplot2)
 res$results %>%
-  group_by(lambda,type) %>%
+  dplyr::select(-distS,-distC) %>%
+  group_by(lambdaC,addRecT) %>%
   summarise_all(mean) %>%
   ungroup() %>%
-  mutate(lambda = 1-exp(-lambda*24)) %>%
-  ggplot(aes(x=lambda,y=study.end,col=factor(type))) +
+  mutate(lambdaC = 1-exp(-lambdaC*24)) %>%
+  ggplot(aes(x=lambdaC,y=study.end,col=factor(addRecT))) +
   geom_point() +
   geom_hline(yintercept = L,lty=2,col="darkgrey") +
   geom_line() +
   ggtitle(sprintf("Mean Time to End of Study (nEvent=%i)",ceiling(nEvents))) +
   theme_bw() +
   ylab("Mean study duration") +
-  xlab("24 month conifrmed progression probability")# +
-# scale_y_continuous(breaks = seq(30,70,by=10),limits = c(30,70))
+  xlab("24 month conifrmed progression probability") +
+  scale_x_continuous(breaks=1-exp(-lambdaC*24))# +
 res$results %>%
-  group_by(lambda,type) %>%
+  dplyr::select(-distS,-distC) %>%
+  group_by(lambdaC,addRecT) %>%
   summarise_all(mean) %>%
   ungroup() %>%
-  mutate(lambda = 1-exp(-lambda*24)) %>%
-  ggplot(aes(x=lambda,y=nPop-sum(2*N),col=factor(type))) +
+  mutate(lambdaC = 1-exp(-lambdaC*24)) %>%
+  ggplot(aes(x=lambdaC,y=nPop-sum(recruitment[,1:2]),col=factor(addRecT))) +
   geom_point() +
   geom_line() +
   ggtitle(sprintf("Mean number of Additional Patients (nEvent=%i)",ceiling(nEvents))) +
   ylab("Mean number of additional patients") +
   xlab("24 month conifrmed progression probability") +
-  theme_bw()# +
+  theme_bw() +
+  scale_x_continuous(breaks=1-exp(-lambdaC*24))# +
 # scale_y_continuous(breaks = seq(0,700,by=100),limits = c(0,700))
 res$results %>%
-  group_by(lambda,type) %>%
-  mutate(power = BSSRed::pschoenfeld(theta = theta,
+  dplyr::select(-distS,-distC) %>%
+  group_by(lambdaC,addRecT) %>%
+  summarise_all(mean) %>%
+  mutate(power = BSSRed::pschoenfeld(theta = .7,#theta.star,
                                      nEvent = events,
                                      k = 2,
                                      alpha = .05,
-                                     alternative = "two-sided")) %>%
+                                     alternative = "two-sided")$power) %>%
   summarise_all(mean) %>%
   ungroup() %>%
-  mutate(lambda = 1-exp(-lambda*24)) %>%
-  ggplot(aes(x=lambda,y=power,col=factor(type))) +
+  mutate(lambdaC = 1-exp(-lambdaC*24)) %>%
+  ggplot(aes(x=lambdaC,y=power,col=factor(addRecT))) +
   geom_point() +
   geom_line() +
   geom_hline(yintercept = 1-.1,lty=2,col="darkgrey") +
